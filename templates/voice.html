@@ -1,0 +1,34 @@
+<button onclick="startListening()">🎤 Speak</button>
+
+<p id="output"></p>
+
+<script>
+function startListening() {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+
+    recognition.lang = "en-US";
+
+    recognition.start();
+
+    recognition.onresult = function(event) {
+        let text = event.results[0][0].transcript;
+        document.getElementById("output").innerText = text;
+
+        // Send to backend
+        fetch("/chat", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({message: text})
+        })
+        .then(res => res.json())
+        .then(data => speak(data.response));
+    };
+}
+
+// Text-to-Speech
+function speak(text) {
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "en-US";
+    window.speechSynthesis.speak(speech);
+}
+</script>
