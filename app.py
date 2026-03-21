@@ -13,6 +13,8 @@ app = Flask(__name__)
 # Init DB
 init_db()
 
+#aeflsfb/lsrg/lsvSLRibvoeufcvesyvcksjfv/wfvepfigsaycwv
+
 # Memory
 chat_history = []
 MAX_HISTORY = 10
