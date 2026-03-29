@@ -7,12 +7,14 @@ import json
 # ===============================
 # Load Environment Variables
 # ===============================
+# Try loading from config.env locally, fall back to system env vars on Vercel
 load_dotenv("config.env")
+load_dotenv()  # Also try loading from .env
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
 
 if not OPENROUTER_API_KEY:
-    raise ValueError("OPENROUTER_API_KEY not found in config.env")
+    print("WARNING: OPENROUTER_API_KEY not found in environment variables")
 
 # ===============================
 # Flask App
@@ -401,12 +403,23 @@ def analyze_image():
             user_text += f" Patient also reports: {symptoms}"
 
         messages_payload = [
-            {"role": "system", "content": SKIN_SYSTEM_PROMPTS[lang]},
-            {"role": "user", "content": [
-                {"type": "image_url", "image_url": {"url": f"data:{mime_type};base64,{image_base64}"}},
-                {"type": "text", "text": user_text}
-            ]}
+    {"role": "system", "content": SKIN_SYSTEM_PROMPTS[lang]},
+    {
+        "role": "user",
+        "content": [
+            {
+                "type": "image_url",
+                "image_url": {
+                    "url": f"data:{mime_type};base64,{image_base64}"
+                }
+            },
+            {
+                "type": "text",
+                "text": user_text
+            }
         ]
+    }
+]
 
         reply, model_used = call_openrouter(messages_payload, VISION_MODELS, max_tokens=1024)
 
