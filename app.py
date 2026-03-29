@@ -7,7 +7,7 @@ import json
 # ===============================
 # Load Environment Variables
 # ===============================
-load_dotenv()
+load_dotenv("config.env")
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
 
@@ -430,5 +430,5 @@ def analyze_image():
 # Run Server
 # ===============================
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)

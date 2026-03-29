@@ -1,5 +1,8 @@
 .env
 config.env
+<<<<<<< HEAD
 __pycache__/
 *.pyc
 chat.db
+=======
+>>>>>>> 91de99af51f1025886903684543545bc01e7e93f
